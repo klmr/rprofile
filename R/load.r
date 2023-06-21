@@ -1,11 +1,18 @@
-load = function (renv = TRUE, env = TRUE) {
+load = function (renv = TRUE, env = TRUE, dev = TRUE) {
   if (renv) {
     load_renv()
   }
   if (env) {
     load_project_env()
   }
-  load_user_rprofile()
+  if (! load_user_rprofile()) {
+    return(FALSE)
+  }
+  if (dev) {
+    load_dev_package()
+  }
+
+  TRUE
 }
 
 load_renv = function () {
@@ -33,5 +40,24 @@ load_user_rprofile = function () {
 load_project_env = function () {
   if (file.exists(".env")) {
     readRenviron(".env")
+  }
+}
+
+load_dev_package = function () {
+  if (! interactive()) {
+    return()
+  }
+  if (! file.exists("DESCRIPTION")) {
+    return()
+  }
+
+  first = get0(".First", envir = .GlobalEnv, mode = "function", ifnotfound = function () {})
+
+  .GlobalEnv$.First = function () {
+    first()
+
+    if (requireNamespace("devtools", quietly = TRUE)) {
+      devtools::load_all(export_all = FALSE)
+    }
   }
 }
