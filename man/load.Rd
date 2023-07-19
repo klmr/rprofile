@@ -14,7 +14,7 @@
   \item{dev}{[\code{logical(1)}] whether to run \code{devtools::load_all()} if the current project is a development package}
 }
 \value{
-  \code{rprofile::load()} will return whether loading the user R profile file succeeded: in case of an error, it returns \code{FALSE} and converts the error into a warning.
+  \code{rprofile::load()} will invisibly return whether loading the user R profile file succeeded: in case of an error, it returns \code{FALSE} and converts the error into a warning.
 }
 \details{
   This function should be the first thing that gets executed inside a project \file{.Rprofile} file, and it should usually be written exactly as follows: \code{requireNamespace("rprofile", quietly = TRUE) && rprofile::load()}.

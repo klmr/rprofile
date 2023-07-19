@@ -8,13 +8,13 @@ load = function (..., renv = TRUE, dotenv = TRUE, dev = TRUE) {
     load_project_dotenv()
   }
   if (! load_user_rprofile()) {
-    return(FALSE)
+    return(invisible(FALSE))
   }
   if (dev) {
     load_dev_package()
   }
 
-  TRUE
+  invisible(TRUE)
 }
 
 load_renv = function () {
