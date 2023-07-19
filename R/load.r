@@ -1,4 +1,6 @@
-load = function (renv = TRUE, dotenv = TRUE, dev = TRUE) {
+load = function (..., renv = TRUE, dotenv = TRUE, dev = TRUE) {
+  check_dots_empty()
+
   if (renv) {
     load_renv()
   }
