@@ -1,4 +1,4 @@
-load = function (..., renv = TRUE, dotenv = TRUE, dev = TRUE) {
+load = function (..., isolate = FALSE, renv = TRUE, dotenv = TRUE, dev = TRUE) {
   check_dots_empty()
 
   if (renv) {
@@ -7,7 +7,7 @@ load = function (..., renv = TRUE, dotenv = TRUE, dev = TRUE) {
   if (dotenv) {
     load_project_dotenv()
   }
-  if (! load_user_rprofile()) {
+  if (! isolate && ! load_user_rprofile()) {
     return(invisible(FALSE))
   }
   if (dev) {

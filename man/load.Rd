@@ -5,10 +5,11 @@
   \code{rprofile::load()} attempts to load the global R profile configuration and any other common project configuration.
 }
 \usage{
-  \special{rprofile::load(..., renv = TRUE, dotenv = TRUE, dev = TRUE)}
+  \special{rprofile::load(..., isolate = FALSE, renv = TRUE, dotenv = TRUE, dev = TRUE)}
 }
 \arguments{
   \item{...}{ignored; forces named argument passing}
+  \item{isolate}{[\code{logical(1)}] whether to isolate the project from the global configuration (default: \code{FALSE})}
   \item{renv}{[\code{logical(1)}] whether to activate an \pkg{renv}, if present (default: \code{TRUE})}
   \item{dotenv}{[\code{logical(1)}] whether to load environment variables defined in a local \file{.env} file (default: \code{TRUE})}
   \item{dev}{[\code{logical(1)}] whether to run \code{devtools::load_all()} if the current project is a development package}
@@ -19,7 +20,7 @@
 \details{
   This function should be the first thing that gets executed inside a project \file{.Rprofile} file, and it should usually be written exactly as follows: \code{requireNamespace("rprofile", quietly = TRUE) && rprofile::load()}.
 
-  The user R profile configuration is preferentially looked up in the \env{R_PROFILE_USER} environment variable. If that is unset, it is instead loaded from \file{~/.Rprofile}. It is loaded (mostly) \emph{as-if} its code was directly copied into the project \file{.Rprofile} file.
+  Unless \code{isolate = TRUE} is set, the user R profile configuration is preferentially looked up in the \env{R_PROFILE_USER} environment variable. If that is unset, it is instead loaded from \file{~/.Rprofile}. It is loaded (mostly) \emph{as-if} its code was directly copied into the project \file{.Rprofile} file. By contrast, if \code{isolate = TRUE} is set, no attempt to load any further \file{.Rprofile} files is made.
 
   \code{rprofile::load()} will by default also activate the \pkg{renv} associated with the current project, if any, and will also load environment variables defined in a local \file{.env} file. These two actions will happen \emph{before} the user profile is loaded.
 
