@@ -1,9 +1,9 @@
-load = function (renv = TRUE, env = TRUE, dev = TRUE) {
+load = function (renv = TRUE, dotenv = TRUE, dev = TRUE) {
   if (renv) {
     load_renv()
   }
-  if (env) {
-    load_project_env()
+  if (dotenv) {
+    load_project_dotenv()
   }
   if (! load_user_rprofile()) {
     return(FALSE)
@@ -37,7 +37,7 @@ load_user_rprofile = function () {
   }
 }
 
-load_project_env = function () {
+load_project_dotenv = function () {
   if (file.exists(".env")) {
     readRenviron(".env")
   }

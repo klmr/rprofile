@@ -5,12 +5,12 @@
   \code{rprofile::load()} attempts to load the global R profile configuration and any other common project configuration.
 }
 \usage{
-  \special{rprofile::load(renv = TRUE, env = TRUE, dev = TRUE)}
+  \special{rprofile::load(renv = TRUE, dotenv = TRUE, dev = TRUE)}
 }
 \arguments{
-  \item{renv}{[\code{logical(1L)}] whether to activate an \pkg{renv}, if present (default: \code{TRUE})}
-  \item{env}{[\code{logical(1L)}] whether to load environment variables defined in a local \file{.env} file (default: \code{TRUE})}
-  \item{dev}{[\code{logical(1L)}] whether to run \code{devtools::load_all()} if the current project is a development package}
+  \item{renv}{[\code{logical(1)}] whether to activate an \pkg{renv}, if present (default: \code{TRUE})}
+  \item{dotenv}{[\code{logical(1)}] whether to load environment variables defined in a local \file{.env} file (default: \code{TRUE})}
+  \item{dev}{[\code{logical(1)}] whether to run \code{devtools::load_all()} if the current project is a development package}
 }
 \value{
   \code{rprofile::load()} will return whether loading the user R profile file succeeded: in case of an error, it returns \code{FALSE} and converts the error into a warning.
