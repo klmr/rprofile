@@ -32,7 +32,7 @@ load_user_rprofile = function () {
         TRUE
       },
       error = function (e) {
-        warning(conditionMessage(e))
+        warning(simpleWarning(conditionMessage(e), conditionCall(e)))
         FALSE
       }
     )
