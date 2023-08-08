@@ -18,13 +18,13 @@ load = function (..., isolate = FALSE, renv = TRUE, dotenv = TRUE, dev = TRUE) {
 }
 
 load_renv = function () {
-  if (file.exists("renv/activate.R")) {
-    sys.source("renv/activate.R", envir = .GlobalEnv)
+  if (file.exists('renv/activate.R')) {
+    sys.source('renv/activate.R', envir = .GlobalEnv)
   }
 }
 
 load_user_rprofile = function () {
-  user_rprofile = Sys.getenv("R_PROFILE_USER", "~/.Rprofile")
+  user_rprofile = Sys.getenv('R_PROFILE_USER', '~/.Rprofile')
 
   if (file.exists(user_rprofile)) {
     tryCatch(
@@ -41,8 +41,8 @@ load_user_rprofile = function () {
 }
 
 load_project_dotenv = function () {
-  if (file.exists(".env")) {
-    readRenviron(".env")
+  if (file.exists('.env')) {
+    readRenviron('.env')
   }
 }
 
@@ -50,7 +50,7 @@ load_dev_package = function () {
   if (! interactive()) {
     return()
   }
-  if (! file.exists("DESCRIPTION")) {
+  if (! file.exists('DESCRIPTION')) {
     return()
   }
 
@@ -66,7 +66,7 @@ load_dev_package = function () {
   # To work around this, we hook into the last package that will be loaded,
   # and check *from there* whether ‘devtools’ is now available or not:
 
-  default_pkgs = getOption("defaultPackages")
+  default_pkgs = getOption('defaultPackages')
   if (length(default_pkgs) == 0L) {
     # Something weird is going on, but okay.
     return()
@@ -74,12 +74,12 @@ load_dev_package = function () {
   last_pkg = default_pkgs[length(default_pkgs)]
 
   setHook(
-    packageEvent(last_pkg, "onLoad"),
+    packageEvent(last_pkg, 'onLoad'),
     \(...) {
-      if (requireNamespace("devtools", quietly = TRUE)) {
+      if (requireNamespace('devtools', quietly = TRUE)) {
         devtools::load_all(export_all = FALSE)
       }
     },
-    "append"
+    'append'
   )
 }

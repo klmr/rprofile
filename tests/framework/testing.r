@@ -26,8 +26,6 @@ reg.finalizer(
 test_case = function (name, expr) {
   self = environment()
 
-  caller = parent.frame()
-
   .context$tests = .context$tests + 1L
   .context$test = new.env()
   .context$test$asserts = 0L
@@ -54,7 +52,6 @@ test_case = function (name, expr) {
     })
 
     tryCatch(
-      #eval(substitute(expr), envir = caller),
       expr,
       assertion_error = function (e) {
         self$messages = c(messages, conditionMessage(e))
@@ -65,7 +62,7 @@ test_case = function (name, expr) {
         .context$test$failures = 1L
       },
       error = function (e) {
-        self$messages = c(messages, paste0("Unexpected failure: ", conditionMessage(e)))
+        self$messages = c(messages, paste0('Unexpected failure: ', conditionMessage(e)))
         .context$test$failures = 1L
       }
     )
@@ -100,7 +97,8 @@ expect_ok = function (expr) {
       .log_success()
     },
     error = function (e) {
-      stop(.expect_error(paste0('Unexpected error (', conditionMessage(e), ') for:'), deparse(substitute(expr)), call))
+      description = paste0('Unexpected error (', conditionMessage(e), ') for:')
+      stop(.expect_error(description, deparse(substitute(expr)), call))
     }
   )
 }
@@ -115,7 +113,8 @@ expect_error = function (expr, regex = NULL) {
     error = function (e) {
       msg = conditionMessage(e)
       if (! is.null(regex) && ! grepl(regex, msg)) {
-        stop(.expect_error(paste0('Expected error, but not with message (', msg, '):'), deparse(substitute(expr)), call))
+        description = paste0('Expected error, but not with message (', msg, '):')
+        stop(.expect_error(description, deparse(substitute(expr)), call))
       }
       .log_success()
     }
@@ -137,7 +136,7 @@ expect_error = function (expr, regex = NULL) {
 .error = function (message, call, subclass) {
   simple_error_class = c('simpleError', 'error', 'condition')
   structure(
-    list(message = as.character(message), call = call), 
+    list(message = as.character(message), call = call),
     class = c(subclass, simple_error_class)
   )
 }
