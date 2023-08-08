@@ -54,6 +54,10 @@ load_dev_package = function () {
     return()
   }
 
+  # `devtools::load_all()` needs to be executed *after* other packages have been
+  # attached. Otherwise the order in the search path is wrong, and some names
+  # might be shadowed.
+
   # We want to load (but ideally not attach!) ‘devtools’, *if* it is installed.
   # Simply adding it to the `defaultPackages` would cause a failure if it is not
   # installed. And checking whether it is installed here may also fail, since
