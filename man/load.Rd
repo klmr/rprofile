@@ -26,3 +26,14 @@
 
   Lastly, \code{rprofile::load()} will check if the code is being run from an interactive session. If so, and if the project contains a \file{DESCRIPTION} file, \pkg{rprofile} will attempt to load \pkg{devtools} and then execute \code{devtools::load_all(export_all = FALSE)}. This will happen inside the session’s \code{\link[base:Startup]{.First}} hook function, to ensure that the package load order is not disrupted by prematurely loading \pkg{devtools} or any of the package dependencies. If a \code{.First} hook function already exists (i.e. because it was defined in the system or user profile), that existing definition will be executed \emph{first}.
 }
+\examples{
+# Each option is configurable; in the extreme case, the function does nothing:
+rprofile::load(isolate = TRUE, renv = FALSE, dotenv = FALSE, dev = FALSE)
+
+\dontrun{
+# In general, the following code should be the first line of a project
+# `.Rprofile` file, which first tests whether the package is installed, and then
+# loads it and runs the chosen initializations:
+requireNamespace("rprofile", quietly = TRUE) && rprofile::load()
+}
+}
