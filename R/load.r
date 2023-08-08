@@ -74,7 +74,7 @@ load_dev_package = function () {
   last_pkg = default_pkgs[length(default_pkgs)]
 
   setHook(
-    packageEvent(last_pkg, 'onLoad'),
+    packageEvent(last_pkg, 'attach'),
     \(...) {
       if (requireNamespace('devtools', quietly = TRUE)) {
         devtools::load_all(export_all = FALSE)
