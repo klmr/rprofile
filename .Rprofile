@@ -10,9 +10,7 @@ local({
   }
 
   check = function (as_cran = TRUE) {
-    bundle = .bundle()
-    if (! file.exists(bundle)) build()
-    .rcmd('check', if (as_cran) '--as-cran', bundle)
+    .rcmd('check', if (as_cran) '--as-cran', .bundle())
   }
 
   install = function (lib = NULL) {
@@ -26,7 +24,9 @@ local({
 
   .bundle = function () {
     desc = as.list(read.dcf(file.path(.pkgdir, 'DESCRIPTION'))[1L, ])
-    file.path(.pkgdir, paste0(desc$Package, '_', desc$Version, '.tar.gz'))
+    bundle = file.path(.pkgdir, paste0(desc$Package, '_', desc$Version, '.tar.gz'))
+    if (! file.exists(bundle)) build()
+    bundle
   }
 
   .rcmd = function (...) {
