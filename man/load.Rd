@@ -24,7 +24,7 @@
 
   \code{rprofile::load()} will by default also activate the \pkg{renv} associated with the current project, if any, and will also load environment variables defined in a local \file{.env} file. These two actions will happen \emph{before} the user profile is loaded.
 
-  Lastly, \code{rprofile::load()} will check if the code is being run from an interactive session. If so, and if the project contains a \file{DESCRIPTION} file, \pkg{rprofile} will attempt to load \pkg{devtools} and then execute \code{devtools::load_all(export_all = FALSE)}. This will happen inside the session’s \code{\link[base:Startup]{.First}} hook function, to ensure that the package load order is not disrupted by prematurely loading \pkg{devtools} or any of the package dependencies. If a \code{.First} hook function already exists (i.e. because it was defined in the system or user profile), that existing definition will be executed \emph{first}.
+  Lastly, \code{rprofile::load()} will check if the code is being run from an interactive session. If so, and if the project contains a \file{DESCRIPTION} file, \pkg{rprofile} will attempt to load \pkg{devtools} and then execute \code{devtools::load_all(export_all = FALSE)}. To avoid disrupting the regular package load order, this action will be deferred until after all default packages (given by \code{getOption('defaultPackages')}) have been loaded and attached.
 }
 \examples{
 # Each option is configurable; in the extreme case, the function does nothing:
