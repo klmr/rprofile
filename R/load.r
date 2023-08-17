@@ -54,17 +54,17 @@ load_dev_package = function () {
     return()
   }
 
-  # `devtools::load_all()` needs to be executed *after* other packages have been
+  # `pkgload::load_all()` needs to be executed *after* other packages have been
   # attached. Otherwise the order in the search path is wrong, and some names
   # might be shadowed.
 
-  # We want to load (but ideally not attach!) ‘devtools’, *if* it is installed.
+  # We want to load (but ideally not attach!) ‘pkgload’, *if* it is installed.
   # Simply adding it to the `defaultPackages` would cause a failure if it is not
   # installed. And checking whether it is installed here may also fail, since
   # this code is run before a potential ‘renv’ environment is set up, which may
-  # or may not have ‘devtools’.
-  # To work around this, we hook into the last package that will be loaded,
-  # and check *from there* whether ‘devtools’ is now available or not:
+  # or may not have ‘pkgload’.
+  # To work around this, we hook into the last package that will be loaded, and
+  # check *from there* whether ‘pkgload’ is now available or not:
 
   default_pkgs = getOption('defaultPackages')
   if (length(default_pkgs) == 0L) {
@@ -76,8 +76,8 @@ load_dev_package = function () {
   setHook(
     packageEvent(last_pkg, 'attach'),
     \(...) {
-      if (requireNamespace('devtools', quietly = TRUE)) {
-        devtools::load_all(export_all = FALSE)
+      if (requireNamespace('pkgload', quietly = TRUE)) {
+        pkgload::load_all(export_all = FALSE)
       }
     },
     'append'
