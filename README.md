@@ -1,4 +1,4 @@
-# rprofile <img src="man/figures/logo.png" alt="right" />
+# rprofile
 
 <span class="pkg">rprofile</span> stream-lines project `.Rprofile` configuration loading.
 
