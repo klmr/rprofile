@@ -1,4 +1,4 @@
-# development version
+# rprofile 0.3.0
 
 ## Enhancements
 
