@@ -4,5 +4,5 @@ check_dots_empty = function (definition = sys.function(sys.parent()), call = sys
     return()
   }
 
-  stop(simpleError('`...` must be empty.\nDid you forget to name an argument?', call))
+  stop(simpleError('`...` must be empty.\nℹ Did you forget to name an argument?', call))
 }
