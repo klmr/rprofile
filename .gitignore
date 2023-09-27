@@ -1,4 +1,5 @@
 /LICENSE
 /inst/
+/renv/
 /rprofile.Rcheck/
 /rprofile_*.tar.gz
