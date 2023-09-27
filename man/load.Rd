@@ -12,7 +12,7 @@
   \item{isolate}{[\code{logical(1)}] whether to isolate the project from the global configuration (default: \code{FALSE})}
   \item{renv}{[\code{logical(1)}] whether to activate an \pkg{renv}, if present (default: \code{TRUE})}
   \item{dotenv}{[\code{logical(1)}] whether to load environment variables defined in a local \file{.env} file (default: \code{TRUE})}
-  \item{dev}{[\code{logical(1)}] whether to run \code{pkgload::load_all()} if the current project is a development package}
+  \item{dev}{[\code{logical(1)|call}] whether to run \code{pkgload::load_all()} if the current project is a development package (default: \code{TRUE}; see \strong{Details})}
 }
 \value{
   \code{rprofile::load()} will invisibly return whether loading the user R profile file succeeded: in case of an error, it returns \code{FALSE} and converts the error into a warning.
@@ -24,7 +24,7 @@
 
   \code{rprofile::load()} will by default also activate the \pkg{renv} associated with the current project, if any, and will also load environment variables defined in a local \file{.env} file. These two actions will happen \emph{before} the user profile is loaded.
 
-  Lastly, \code{rprofile::load()} will check if the code is being run from an interactive session. If so, and if the project contains a \file{DESCRIPTION} file, \pkg{rprofile} will attempt to load \pkg{pkgload} and then execute \code{pkgload::load_all(export_all = FALSE)}. To avoid disrupting the regular package load order, this action will be deferred until after all default packages (given by \code{getOption('defaultPackages')}) have been loaded and attached.
+  Lastly, \code{rprofile::load()} will check if the code is being run from an interactive session. If so, and if the project contains a \file{DESCRIPTION} file, \pkg{rprofile} will attempt to load \pkg{pkgload} and then execute \code{pkgload::load_all(export_all = FALSE)}. To avoid disrupting the regular package load order, this action will be deferred until after all default packages (given by \code{getOption('defaultPackages')}) have been loaded and attached. Users can customize which code should be run by passing an unevaluated expression (instead of \code{TRUE}) in the \code{dev} argument. Since this code will be evaluated \emph{after} the remaining \file{.Rprofile} code has been run, the argument may refer to functions defined afterwards (see \strong{Examples}).
 }
 \examples{
 # Each option is configurable; in the extreme case, the function does nothing:
@@ -35,5 +35,15 @@ rprofile::load(isolate = TRUE, renv = FALSE, dotenv = FALSE, dev = FALSE)
 # `.Rprofile` file, which first tests whether the package is installed, and then
 # loads it and runs the chosen initializations:
 requireNamespace("rprofile", quietly = TRUE) && rprofile::load()
+}
+
+\dontrun{
+# We can customize how to load development packages:
+requireNamespace("rprofile", quietly = TRUE) && rprofile::load(dev = quote(reload()))
+
+reload = function () {
+  devtools::document()
+  devtools::load_all(quiet = TRUE)
+}
 }
 }

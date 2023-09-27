@@ -10,8 +10,8 @@ load = function (..., isolate = FALSE, renv = TRUE, dotenv = TRUE, dev = TRUE) {
   if (! isolate && ! load_user_rprofile()) {
     return(invisible(FALSE))
   }
-  if (dev) {
-    load_dev_package()
+  if (! isFALSE(dev)) {
+    load_dev_package(dev)
   }
 
   invisible(TRUE)

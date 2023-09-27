@@ -1,4 +1,18 @@
-load_dev_package = function () {
+load_dev_package = function (what) {
+  load_wrapper = if (isTRUE(what)) {
+    pkgload_loader
+  } else {
+    if (! is.call(what)) {
+      cnd = simpleError(
+        'Invalid type for argument `dev`: expected logical or call.',
+        call = sys.call(sys.parent())
+      )
+      stop(cnd)
+    }
+
+    \(...) eval(what, envir = .GlobalEnv)
+  }
+
   if (! interactive()) {
     return()
   }
@@ -34,13 +48,11 @@ load_dev_package = function () {
   }
   last_pkg = default_pkgs[length(default_pkgs)]
 
-  setHook(
-    packageEvent(last_pkg, 'attach'),
-    \(...) {
-      if (requireNamespace('pkgload', quietly = TRUE)) {
-        pkgload::load_all(export_all = FALSE)
-      }
-    },
-    'append'
-  )
+  setHook(packageEvent(last_pkg, 'attach'), load_wrapper)
+}
+
+pkgload_loader = function (...) {
+  if (requireNamespace('pkgload', quietly = TRUE)) {
+    pkgload::load_all(export_all = FALSE)
+  }
 }
