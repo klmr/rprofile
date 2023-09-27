@@ -22,9 +22,12 @@
 
   Unless \code{isolate = TRUE} is set, the user R profile configuration is preferentially looked up in the \env{R_PROFILE_USER} environment variable. If that is unset, it is instead loaded from \file{~/.Rprofile}. It is loaded (mostly) \emph{as-if} its code was directly copied into the project \file{.Rprofile} file. By contrast, if \code{isolate = TRUE} is set, no attempt to load any further \file{.Rprofile} files is made.
 
-  \code{rprofile::load()} will by default also activate the \pkg{renv} associated with the current project, if any, and will also load environment variables defined in a local \file{.env} file. These two actions will happen \emph{before} the user profile is loaded.
+  \code{rprofile::load()} will by default also activate the \pkg{renv} associated with the current project, if any, and will also load environment variables defined in a local \file{.env} file. These two actions will happen \emph{before} the user profile is loaded. See the \strong{Note} below.
 
   Lastly, \code{rprofile::load()} will check if the code is being run from an interactive session. If so, and if the project contains a \file{DESCRIPTION} file, \pkg{rprofile} will attempt to load \pkg{pkgload} and then execute \code{pkgload::load_all(export_all = FALSE)}. To avoid disrupting the regular package load order, this action will be deferred until after all default packages (given by \code{getOption('defaultPackages')}) have been loaded and attached. Users can customize which code should be run by passing an unevaluated expression (instead of \code{TRUE}) in the \code{dev} argument. Since this code will be evaluated \emph{after} the remaining \file{.Rprofile} code has been run, the argument may refer to functions defined afterwards (see \strong{Examples}).
+}
+\note{
+  You need to ensure that \pkg{renv} is not loaded redundantly in your \file{.Rprofile} file. In other words, please make sure that the line \code{source("renv/activate.R")}, which \pkg{renv} adds automatically, is \emph{not} present in the file.
 }
 \examples{
 # Each option is configurable; in the extreme case, the function does nothing:
