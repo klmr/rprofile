@@ -1,3 +1,10 @@
+# rprofile (development version)
+
+## Enhancements
+
+* Warn when no default packages are configured.
+* Allow users to customize how development packages are loaded (instead of `pkgload::load_all(export_all = FALSE)`).
+
 # rprofile 0.3.0
 
 ## Enhancements
