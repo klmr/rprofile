@@ -42,7 +42,7 @@ load_dev_package = function (what) {
     # Something weird is going on, give up.
     warning(
       'Unable to load development package.\n',
-      'ℹ `options("defaultPackages")` is empty, which should never happen! Please check your configuration.'
+      '\u2139 `options("defaultPackages")` is empty, which should never happen! Please check your configuration.'
     )
     return()
   }
