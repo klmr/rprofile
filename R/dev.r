@@ -37,7 +37,9 @@ load_dev_package = function (what) {
   # the last package from the `defaultPackages` inside .Rprofile (this may
   # happen inadvertently!).
 
-  default_pkgs = getOption('defaultPackages')
+  # Exclude ‘methods’, since that is loaded earlier than other packages,
+  # regardless of its position in the vector.
+  default_pkgs = setdiff(getOption('defaultPackages'), 'methods')
   if (length(default_pkgs) == 0L) {
     # Something weird is going on, give up.
     warning(
