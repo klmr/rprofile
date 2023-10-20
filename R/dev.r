@@ -10,7 +10,7 @@ load_dev_package = function (what) {
       stop(cnd)
     }
 
-    \(...) eval(what, envir = .GlobalEnv)
+    \() eval(what, envir = .GlobalEnv)
   }
 
   if (! interactive()) {
@@ -20,26 +20,12 @@ load_dev_package = function (what) {
     return()
   }
 
-  # `pkgload::load_all()` needs to be executed *after* other packages have been
-  # attached. Otherwise the order in the search path is wrong, and some names
-  # might be shadowed.
+  # `pkgload::load_all()` (or equivalent) needs to be executed *after* the default packages have been attached, otherwise the order in the search path is wrong, and some names might be shadowed.
+  # We cannot (re-)hook `.First`, because that is executed before the default packages are loaded. Furthermore, CRAN forbids overriding `.First`, since it is defined in the global environment. To work around this, we register an `attach` hook for the last default package that will be loaded.
+  # Note that this may fail if either (a) the default packages list gets modified after this code executes but before `.First.sys` is executed; or (b) the “last” default package got attached out-of-order. This can happen if either the user-provided `.First` function or another package loading code (or load hook) modifies the default packages list or attaches packages.
 
-  # We want to load (but ideally not attach!) ‘pkgload’, *if* it is installed.
-  # Simply adding it to the `defaultPackages` would cause a failure if it is not
-  # installed. And checking whether it is installed here may also fail, since
-  # this code is run before a potential ‘renv’ environment is set up, which may
-  # or may not have ‘pkgload’.
-  # We also cannot (re-)hook `.First`, because that is also executed before the
-  # default packages are loaded.
-  # To work around this, we hook into the last package that will be loaded, and
-  # check *from there* whether ‘pkgload’ is now available or not.
-  # Note that this may fail if the user — for whatever reason — manually loads
-  # the last package from the `defaultPackages` inside .Rprofile (this may
-  # happen inadvertently!).
+  default_pkgs = getOption('defaultPackages')
 
-  # Exclude ‘methods’, since that is loaded earlier than other packages,
-  # regardless of its position in the vector.
-  default_pkgs = setdiff(getOption('defaultPackages'), 'methods')
   if (length(default_pkgs) == 0L) {
     # Something weird is going on, give up.
     warning(
@@ -48,13 +34,38 @@ load_dev_package = function (what) {
     )
     return()
   }
-  last_pkg = default_pkgs[length(default_pkgs)]
 
-  setHook(packageEvent(last_pkg, 'attach'), load_wrapper)
+  attached_pkgs = sub('package:', '', grep('^package:', search(), value = TRUE))
+  pkgs_to_load = setdiff(default_pkgs, attached_pkgs)
+
+  if (length(pkgs_to_load) == 0L) {
+    warning(
+      'Unable to load development package.\n',
+      '\u2139 All `options("defaultPackages")` are already loaded and attached before `.First.sys()` was run, which',
+      ' should never happen! Please check your configuration.'
+    )
+    return()
+  }
+
+  # De-prioritize ‘methods’, since that is loaded earlier than other packages, regardless of its position in the vector.
+  last_pkg = utils::tail(c('methods', setdiff(pkgs_to_load, 'methods')), 1L)
+  setHook(
+    packageEvent(last_pkg, 'attach'),
+    \(pkgname, libpath) {
+      # Clean up after ourselves — just in case the package subsequently gets detached and reattached.
+      remove_hook(packageEvent(pkgname, 'attach'), sys.function())
+      load_wrapper()
+    }
+  )
 }
 
-pkgload_loader = function (...) {
+pkgload_loader = function () {
   if (requireNamespace('pkgload', quietly = TRUE)) {
     pkgload::load_all(export_all = FALSE)
   }
+}
+
+remove_hook = function (hook_name, hook) {
+  other_hooks = Filter(\(f) ! identical(f, hook), getHook(hook_name))
+  setHook(hook_name, other_hooks, action = 'replace')
 }

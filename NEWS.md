@@ -2,8 +2,9 @@
 
 ## Enhancements
 
+* Clean up hook function after invoking ‘rprofile’ dev package loader.
 * Disable the ‘renv’ auto-loader to prevent it from writing the autoload code, which conflicts with ‘rprofile’, to the project `.Rprofile`.
-* Warn when no default packages are configured.
+* Warn if no default packages are configured or if they are already all attached after the user profile is run.
 * Allow users to customize how development packages are loaded (instead of `pkgload::load_all(export_all = FALSE)`).
 * Ensure that ‘methods’ is ignored during lazy-loading of dev packages, since it is loaded too early.
 
