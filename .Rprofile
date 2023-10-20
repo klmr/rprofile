@@ -28,7 +28,7 @@ local({
     src_path = file.path(.pkgdir, 'README.md')
     target_path = file.path(.pkgdir, 'inst', 'doc', paste0(.desc()$Package, '.html'))
 
-    dir.create(dirname(src_path), showWarnings = FALSE, recursive = TRUE)
+    dir.create(dirname(target_path), showWarnings = FALSE, recursive = TRUE)
     markdown::mark_html(src_path, target_path)
   }
 

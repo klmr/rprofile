@@ -8,6 +8,7 @@
 * Allow users to customize how development packages are loaded (instead of `pkgload::load_all(export_all = FALSE)`).
 * Ensure that ‘methods’ is ignored during lazy-loading of dev packages, since it is loaded too early.
 
+
 # rprofile 0.3.0
 
 ## Enhancements
