@@ -2,6 +2,7 @@
 
 ## Enhancements
 
+* Disable the ‘renv’ auto-loader to prevent it from writing the autoload code, which conflicts with ‘rprofile’, to the project `.Rprofile`.
 * Warn when no default packages are configured.
 * Allow users to customize how development packages are loaded (instead of `pkgload::load_all(export_all = FALSE)`).
 * Ensure that ‘methods’ is ignored during lazy-loading of dev packages, since it is loaded too early.
