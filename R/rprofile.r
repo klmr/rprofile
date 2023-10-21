@@ -7,10 +7,12 @@ load_user_rprofile = function () {
         sys.source(user_rprofile, envir = .GlobalEnv)
         TRUE
       },
-      error = function (e) {
+      error = \(e) {
         warning(simpleWarning(conditionMessage(e), conditionCall(e)))
         FALSE
       }
     )
+  } else {
+    TRUE
   }
 }

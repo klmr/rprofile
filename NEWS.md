@@ -1,5 +1,10 @@
 # rprofile (development version)
 
+## Bug fixes
+
+* Prevent breaking when no user R profile configuration exists.
+
+
 ## Enhancements
 
 * Clean up hook function after invoking ‘rprofile’ dev package loader.
