@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+* Prevent ‘rprofile’ from being included in the `renv.lock` file when a new ‘renv’ project is initialized.
 * Prevent breaking when no user R profile configuration exists.
 
 
