@@ -1,4 +1,4 @@
-if (requireNamespace('rprofile', quietly = TRUE)) rprofile::load(dev = quote(pkgload::load_all()))
+if (requireNamespace('rprofile', quietly = TRUE)) rprofile::load(dev = quote(reload(TRUE)))
 
 # Define some development utilities.
 
