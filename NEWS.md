@@ -1,4 +1,4 @@
-# rprofile (development version)
+# rprofile 0.4.0
 
 ## Bug fixes
 
