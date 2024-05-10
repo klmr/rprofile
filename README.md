@@ -15,7 +15,7 @@ install.packages('rprofile')
 To use the package, add the following as the first line in a project `.Rprofile` file:
 
 ```r
-if (requireNamespace("rprofile", quietly = TRUE)) rprofile::load()
+try(rprofile::load())
 ```
 
 In most cases, that’s it. See the documentation for available parameters to customize the configuration.

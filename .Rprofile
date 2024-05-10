@@ -1,4 +1,4 @@
-if (requireNamespace('rprofile', quietly = TRUE)) rprofile::load(dev = quote(reload(TRUE)))
+try(rprofile::load(dev = quote(reload(TRUE))), silent = TRUE)
 
 options(
   lintr.linter_file = file.path(getwd(), 'lintr', 'config')

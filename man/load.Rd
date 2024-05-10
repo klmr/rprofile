@@ -18,7 +18,7 @@
   \code{rprofile::load()} will invisibly return whether loading the user R profile file succeeded: in case of an error, it returns \code{FALSE} and converts the error into a warning.
 }
 \details{
-  This function should be the first thing that gets executed inside a project \file{.Rprofile} file, and it should usually be written exactly as follows: \code{if (requireNamespace("rprofile", quietly = TRUE)) rprofile::load()} (the \code{if} being present to ensure that \verb{R CMD} can still run in the current directory when  \pkg{rprofile} is not installed).
+  This function should be the first thing that gets executed inside a project \file{.Rprofile} file, and it should usually be written exactly as follows: \code{try(rprofile::load())} (the \code{try()} is present to ensure that \verb{R CMD} can still run in the current directory when  \pkg{rprofile} is not installed).
 
   Unless \code{isolate = TRUE} is set, the user R profile configuration is preferentially looked up in the \env{R_PROFILE_USER} environment variable. If that is unset, it is instead loaded from \file{~/.Rprofile}. It is loaded (mostly) \emph{as-if} its code was directly copied into the project \file{.Rprofile} file. By contrast, if \code{isolate = TRUE} is set, no attempt to load any further \file{.Rprofile} files is made.
 
@@ -34,15 +34,17 @@
 rprofile::load(isolate = TRUE, renv = FALSE, dotenv = FALSE, dev = FALSE)
 
 \dontrun{
-# In general, the following code should be the first line of a project
-# `.Rprofile` file, which first tests whether the package is installed, and then
-# loads it and runs the chosen initializations:
-if (requireNamespace("rprofile", quietly = TRUE)) rprofile::load()
+# In general, the following code should be the first line of a project’s
+# `.Rprofile` file (using `try()` ensures that R code can still run in the
+# current directory even if ‘rprofile’ is not installed — this is important in
+# particular to allow `R CMD CHECK` to run successfully on CI/CD without having
+# to first install ‘rprofile’):
+try(rprofile::load())
 }
 
 \dontrun{
-# We can customize how to load development packages:
-if (requireNamespace("rprofile", quietly = TRUE)) rprofile::load(dev = quote(reload()))
+# We can customize how to load development packages, .e.g.:
+try(rprofile::load(dev = quote(reload())))
 
 reload = function () {
   devtools::document()
