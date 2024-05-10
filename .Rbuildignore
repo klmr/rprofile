@@ -1,3 +1,4 @@
 ^LICENSE\.md$
+^lintr$
 ^renv$
 ^renv\.lock$

@@ -1,5 +1,9 @@
 if (requireNamespace('rprofile', quietly = TRUE)) rprofile::load(dev = quote(reload(TRUE)))
 
+options(
+  lintr.linter_file = file.path(getwd(), 'lintr', 'config')
+)
+
 # Define some development utilities.
 
 local({
