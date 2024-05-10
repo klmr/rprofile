@@ -12,6 +12,7 @@ local({
   }
 
   check = function (as_cran = TRUE) {
+    unlink(.bundle_path(), force = TRUE)
     .rcmd('check', if (as_cran) '--as-cran', .bundle())
   }
 
@@ -42,9 +43,13 @@ local({
     as.list(read.dcf(file.path(.pkgdir, 'DESCRIPTION'))[1L, ])
   }
 
-  .bundle = function () {
+  .bundle_path = function () {
     desc = .desc()
-    bundle = file.path(.pkgdir, paste0(desc$Package, '_', desc$Version, '.tar.gz'))
+    file.path(.pkgdir, paste0(desc$Package, '_', desc$Version, '.tar.gz'))
+  }
+
+  .bundle = function () {
+    bundle = .bundle_path()
     if (! file.exists(bundle)) build()
     bundle
   }
