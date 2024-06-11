@@ -2,6 +2,7 @@
 
 <span class="pkg">rprofile</span> stream-lines project `.Rprofile` configuration loading.
 
+
 ## Installation
 
 <span class="pkg">rprofile</span> is on CRAN. Install it via
@@ -9,6 +10,7 @@
 ```r
 install.packages('rprofile')
 ```
+
 
 ## Usage
 
@@ -18,7 +20,7 @@ To use the package, add the following as the first line in a project `.Rprofile`
 try(rprofile::load())
 ```
 
-In most cases, that’s it. See the documentation for available parameters to customize the configuration.
+In most cases, that’s it. See the documentation for available parameters to customize the configuration, or have a look at this project’s own `.Rprofile` file.
 
 At the moment, <span class="pkg">rprofile</span> performs the following actions, in order, unless disabled via arguments:
 
