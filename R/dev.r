@@ -13,9 +13,6 @@ load_dev_package = function (what) {
     \() eval(what, envir = .GlobalEnv)
   }
 
-  if (! interactive()) {
-    return()
-  }
   if (! file.exists('DESCRIPTION')) {
     return()
   }

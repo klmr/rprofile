@@ -1,3 +1,10 @@
+# development version
+
+## Breaking changes
+
+* ‘rprofile’ now loads a package in development even in non-interactive mode; this was always the intended behavior, despite the previous (documented) diverging behavior.
+
+
 # rprofile 0.4.0
 
 ## Bug fixes
