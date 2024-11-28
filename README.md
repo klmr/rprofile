@@ -11,13 +11,19 @@
 install.packages('rprofile')
 ```
 
+or install the development version from my R-Universe via
+
+```r
+install.packages('rprofile', repos = 'https://klmr.r-universe.dev')
+```
+
 
 ## Usage
 
-To use the package, add the following as the first line in a project `.Rprofile` file:
+To use the package, call `rprofile::install()` in the directory of your project to add the following as the first line in the project `.Rprofile` file:
 
 ```r
-try(rprofile::load())
+try(rprofile::load(), silent = TRUE)
 ```
 
 In most cases, that’s it. See the documentation for available parameters to customize the configuration, or have a look at this project’s own `.Rprofile` file.

@@ -5,6 +5,11 @@
 * ‘rprofile’ now loads a package in development even in non-interactive mode; this was always the intended behavior, despite the previous (documented) diverging behavior.
 
 
+## Enhancements
+
+* New function `rprofile::install(...)` prepends `try(rprofile::load(...), silent = TRUE)` to the current project’s R profile.
+
+
 # rprofile 0.4.0
 
 ## Bug fixes
