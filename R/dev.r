@@ -2,6 +2,7 @@ load_dev_package = function (what) {
   load_wrapper = if (isTRUE(what)) {
     pkgload_loader
   } else {
+    # NOTE: at this point `what` is already guaranteed not to be `FALSE` by the caller.
     if (! is.call(what)) {
       cnd = simpleError(
         'Invalid type for argument `dev`: expected logical or call.',
